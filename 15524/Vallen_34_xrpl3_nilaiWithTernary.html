@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" http-equiv="X-UA-Compatible" 
+    name="viewport" content="IE=edge, width=device-width, initial-scale=1.0">
 	<title>Menghitung Indeks Prestasi</title>
 	<style>
 		table {
@@ -96,13 +95,12 @@
         function sendError(message) {
             const elmt = document.getElementById("notify");
 
-            if (message === true || message === "") {
-                elmt.classList.add("hidden");
-                return;
-            }
-
-            elmt.classList.remove("hidden");
-            elmt.innerText=message;
+            message === true || message === "" ? (
+                elmt.classList.add("hidden")
+            ) : (
+                elmt.classList.remove("hidden"),
+                elmt.innerText=message
+            );
         }
 
         // Cek kondisi jika ter-cancel karena error
@@ -116,20 +114,20 @@
             let listError = [];
 
             [nilaiQuis, nilaiTugas, nilaiUTS, nilaiUAS].forEach((nilai) => {
-                (nilai.value === "" ? (nilai.classList.add("bg-red-300"), listError.push(`nilai ${nilai.id} kosong`)) : null);
-                (+nilai.value > 100 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} lebih dari 100`)) : null);
-                (+nilai.value < 0 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} kurang dari 0`)) : null);
-                (+nilai.value >= 0 && +nilai.value <= 100 ? (nilai.classList.remove("bg-red-300")) : null);
+                nilai.value === "" ? (nilai.classList.add("bg-red-300"), listError.push(`nilai ${nilai.id} kosong`)) : null;
+                +nilai.value > 100 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} lebih dari 100`)) : null;
+                +nilai.value < 0 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} kurang dari 0`)) : null;
+                +nilai.value >= 0 && +nilai.value <= 100 ? (nilai.classList.remove("bg-red-300")) : null;
             });
 
 
-            (listError.length > 0 ? (
+            listError.length > 0 ? (
                 sendError(`Masalah Value: ${listError.join(", ")}`),
                 document.getElementById("nilai-akhir").textContent = "-",
                 document.getElementById("indeks-presentasi").textContent = "-",
                 document.getElementById("keterangan").textContent = "Nilai Invalid",
                 result=true
-            ) : sendError(true));
+            ) : sendError(true);
 
             return result;
         }
@@ -147,34 +145,34 @@
             let nilaiUTS = +document.getElementById("uts").value;
             let nilaiUAS = +document.getElementById("uas").value;
             let nilaiAkhir = (nilaiQuis * 0.1) + (nilaiTugas * 0.2) + (nilaiUTS * 0.3) + (nilaiUAS * 0.4);
+            let indeksPrestasi;
 
             // cek kondisi
-            if (isCancelled()) return;
+            isCancelled() ? null : (
+                // calculate indeks prestasi
+                nilaiAkhir >= 80 && nilaiAkhir <= 100 ? (
+                    indeksPrestasi = 'A',
+                    keterangan = 'Lulus dengan Sangat Baik'
+                ) : nilaiAkhir >= 68 && nilaiAkhir < 80 ? (
+                    indeksPrestasi = 'B',
+                    keterangan = 'Lulus dengan Baik'
+                ) : nilaiAkhir >= 55 && nilaiAkhir < 68 ? (
+                    indeksPrestasi = 'C',
+                    keterangan = 'Lulus dengan Cukup'
+                ) : nilaiAkhir >= 38 && nilaiAkhir < 55 ? (
+                    indeksPrestasi = 'D',
+                    keterangan = 'Lulus dengan Kurang'
+                ) : (
+                    indeksPrestasi = 'F+',
+                    keterangan = 'Tidak Lulus'
+                ),
 
-            // calculate indeks prestasi
-            let indeksPrestasi;
-            (nilaiAkhir >= 80 && nilaiAkhir <= 100) ? (
-                indeksPrestasi = 'A',
-                keterangan = 'Lulus dengan Sangat Baik'
-            ) : (nilaiAkhir >= 68 && nilaiAkhir < 80) ? (
-                indeksPrestasi = 'B',
-                keterangan = 'Lulus dengan Baik'
-            ) : (nilaiAkhir >= 55 && nilaiAkhir < 68) ? (
-                indeksPrestasi = 'C',
-                keterangan = 'Lulus dengan Cukup'
-            ) : (nilaiAkhir >= 38 && nilaiAkhir < 55) ? (
-                indeksPrestasi = 'D',
-                keterangan = 'Lulus dengan Kurang'
-            ) : (
-                indeksPrestasi = 'F+',
-                keterangan = 'Tidak Lulus'
+                // update table
+                document.getElementById("nilai-akhir").textContent = nilaiAkhir*10/10,
+                document.getElementById("indeks-presentasi").textContent = indeksPrestasi,
+                document.getElementById("keterangan").textContent = keterangan
             );
-
-            // update table
-            document.getElementById("nilai-akhir").textContent = nilaiAkhir*10/10;
-            document.getElementById("indeks-presentasi").textContent = indeksPrestasi;
-            document.getElementById("keterangan").textContent = keterangan;
         }
 	</script>
 </body>
-</html>
+</html
